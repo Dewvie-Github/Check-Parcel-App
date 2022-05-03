@@ -1,3 +1,54 @@
+<script>
+import Axios from "axios"
+
+export default {
+  name:"Register",
+  data(){
+        return{
+            userData:{
+                nameTH:"",
+                surnameTH:"",
+                nameEN:"",
+                surnameEN:"",
+                email:"",
+                password:"",
+                confirmPassword:"",
+                checked1: false,
+                checked2: false
+            }
+        }
+    },
+  methods:{
+      async createUser(userData){
+        if (password !== confirmPassword){
+          alert("รหัสผ่านไม่ตรงกัน โปรดกรอกใหม่อีกครั้ง")
+          return 0;
+        }else if (
+          userData.nameTH == "" || userData.surnameTH == "" ||
+          userData.nameEN == "" || userData.surnameEN == "" ||
+          userData.email == "" || userData.password == "" || userData.confirmPassword == "" ||
+          userData.checked1 == false || userData.checked2 == false
+        ){
+          alert ("กรุณาใส่ข้อมูลทุกช่อง และครบถ้วน")
+          return 0;
+        }else{
+          await Axios.post("http://localhost:9000/user",{
+            nameTH: userData.nameTH,
+            surnameTH: userData.surnameTH,
+            nameEN: userData.nameEN,
+            surnameEN: userData.surnameEN,
+            email: userData.email,
+            password: userData.password
+            }).then(res => console.log(res)).catch(err => console.log(err))
+          window.location.href = "/#/Login" 
+        }
+      }  
+    }
+  
+
+}
+</script>
+
 <template>
   <rectangle_Re class="centered">
     <div1 class="form-control">
@@ -8,45 +59,44 @@
 
     <div1 class="form-control">
       <center>
-          <input type="text" class="fname" id="firstnameEN" placeholder="Name" style="background: #4C4C6D">
-          <input type="text" class="fname" id="surnameEN" placeholder="Surname" style="background: #4C4C6D">
-          <input type="text" class="fname" id="firstnameTH" placeholder="ชื่อ" style="background: #4C4C6D">
-          <input type="text" class="fname" id="surnameEN" placeholder="นามสกุล" style="background: #4C4C6D">
-          <input type="text" class="lname" id="email" placeholder="E-mail" style="background: #4C4C6D">
-          <input type="text" class="lname" id="password" placeholder="Password" style="background: #4C4C6D">
-          <input type="text" class="lname" id="confirmPassword" placeholder="Confirm Password" style="background: #4C4C6D">
+          <input type="text" class="fname" v-model.trim="userData.nameEN" id="nameEN" placeholder="Name" style="background: #4C4C6D">
+          <input type="text" class="fname" v-model.trim="userData.surnameEN" id="surnameEN" placeholder="Surname" style="background: #4C4C6D">
+          <input type="text" class="fname" v-model.trim="userData.nameTH" id="nameTH" placeholder="ชื่อ" style="background: #4C4C6D">
+          <input type="text" class="fname" v-model.trim="userData.surnameTH" id="surnameEN" placeholder="นามสกุล" style="background: #4C4C6D">
+          <input type="text" class="lname" v-model.trim="userData.email" id="email" placeholder="E-mail" style="background: #4C4C6D">
+          <input type="password" class="lname" v-model="userData.password" id="password" placeholder="Password" style="background: #4C4C6D">
+          <input type="password" class="lname" v-model="userData.confirmPassword" id="confirmPassword" placeholder="Confirm Password" style="background: #4C4C6D">
        </center>
     </div1>
 
 
     <div3 class="con">
       <center>
-        <input type="checkbox" />
+        <input v-model="userData.checked1" type="checkbox" required />
         <label>I agree that I use @fitm.kmutnb.ac.th email. </label>
        </center>
     </div3>
 
     <div3 class="con">
       <center>
-        <input type="checkbox" />
+        <input v-model="userData.checked2" type="checkbox" required />
         <label>I agree to the terms and conditions </label>
        </center>
     </div3>
 
+    <div2 class="control">
+      <center>Already have an account? &nbsp; <router-link to="/Login"> Go to Login </router-link></center>
+    </div2>
+
     <div>
-      <center><button>Sign up</button></center>
+      <center> <button @click="createUser(userData)">Sign up</button></center>
     </div>
   
 
   </rectangle_Re>
 </template>
 
-<script>
-export default {
-  name:"Register"
 
-}
-</script>
 
 <style>
 h1 {

@@ -1,3 +1,59 @@
+<script>
+import NavbarAdmin from './NavbarAdmin.vue'
+import ParcelData from './ParcelData.vue'
+import Axios from 'axios'
+
+
+export default {
+    
+    name:"CheckStatus",
+    components:{
+        ParcelData,
+        NavbarAdmin
+    },
+     data(){
+        return{
+            DataParcels:[]
+            }
+    },
+     methods:{
+        async getParcelData(){
+           await Axios.get("http://localhost:9000/parcelCheck")
+            .then(res => {this.DataParcels = res.data})
+            .then(console.log(this.DataParcels));
+        },
+        async checkUpdateParcel(DataParcels){
+            for (let i =0; i< DataParcels.length;i++){
+                if(DataParcels[i].statusDelivered == true && DataParcels[i].returnDelivered == true){
+                    alert(`id:${DataParcels[i].parcel_id} ให้เลือกติ๊กแค่ช่องเดียวเท่านั้น! `)
+                    return 'error';
+                }
+            }
+
+            return DataParcels
+        },
+        async updateParcel(DataParcels){
+            DataParcels = await this.checkUpdateParcel(DataParcels);
+            if (DataParcels == 'error'){
+                return false
+            }
+            
+            await Axios.put("http://localhost:9000/parcelCheck",DataParcels)
+            .then(res => console.log(res));
+            
+            alert("ข้อมูลถูกอัพเดทลงฐานข้อมูลแล้ว")
+            location.reload();
+        }
+
+    }, mounted(){
+        this.getParcelData();
+        this.updateParcel();
+    }
+}
+
+
+</script>
+
 <template>
  <div class="container" >
 
@@ -13,60 +69,40 @@
                     <th>ชื่อ</th>
                     <th>นามสกุล</th>
                     <th><center>ตามกำหนด</center></th>
+                    <th><center>เกินกำหนด</center></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ParcelData v-for = "item, index in DataParcels"
                     :key = "index">
-                    <td>{{no = item.no}}</td>
-                    <td>{{id = item.id}}</td>
-                    <td>{{name = item.name}}</td>
-                    <td>{{surname = item.surname}}</td>
-                    <td><center><input type="checkbox" />
-                        <label for="asScheduled"></label></center></td>
+                    <td>{{index+1}}</td>
+                    <td>{{item.parcel_id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.surname}}</td>
+                    <td><center><input v-model="item.statusDelivered" value="true" type="checkbox" />
+                        <label for="asScheduled" ></label></center></td>
+                    <td><center><input v-model="item.returnDelivered" value="true" type="checkbox" />
+                        <label for="overdue"></label></center></td>
                     </tr>
                 </tbody>
             </table>
-            
             <div class="button">
-                <button>บันทึกข้อมูล</button>
+                <button @click="updateParcel(DataParcels)" >บันทึกข้อมูล</button>
             </div>
-
             </center>
           
         </div>
     </div>
 </template>
 
-<script>
-import NavbarAdmin from './NavbarAdmin.vue'
-import ParcelData from './ParcelData.vue'
-
-
-export default {
-    
-    name:"CheckStatus",
-    components:{
-        ParcelData,
-        NavbarAdmin
-    },
-     data(){
-        return{
-            DataParcels:[
-                {no:1, id:"00-00001", name:"Nutchanock", surname:"Wisuttiphun",
-                dataReturn:"01-01-22", asScheduled:true, overdue:false},
-                {no:2, id:"00-00002", name:"Saharat", surname:"Thongin",
-                dataReturn:"02-01-22", asScheduled:true, overdue:false},
-                {no:3, id:"00-00003", name:"Wanvipar", surname:"Ruka",
-                dataReturn:"02-01-22", asScheduled:true, overdue:false}
-            ]}
-    }
-}
-
-
-</script>
 
 <style scoped>
+
+input[type=radio] {
+    border: 0px;
+    width: 100%;
+    height: 1.25em;
+}
 .container {
   display: grid;
   width: 100%;

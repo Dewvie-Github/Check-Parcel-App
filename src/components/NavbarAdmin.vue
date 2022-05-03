@@ -4,15 +4,23 @@
       <img src="/logo.png" align="left">
       <router-link to="/FormAddParcel" > <h1>เพิ่มข้อมูลพัสดุ</h1></router-link>
       <router-link to="/CheckStatus"> <h1>ยืนยันสถานะพัสดุ</h1></router-link>
-      <router-link to="/ParcelReturn"> <h1>พัสดุที่ต้องส่งตีกลับ</h1></router-link>
+      <router-link to="/ParcelScheduled"> <h1>พัสดุที่มารับตามกำหนด</h1></router-link>
       <router-link to="/ReturnFinish"> <h1>พัสดุที่ส่งตีกลับเสร็จสิ้น</h1></router-link>
+      <router-link to="/" @click="logout()"> <h1>ออกจากระบบ</h1></router-link>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name:"NavbarAdmin"
+    name:"NavbarAdmin",
+    methods:{
+      logout(){
+        localStorage.setItem("currentLogin", null);
+        window.location.href = "/#/Login"
+        alert("คุณออกจากระบบแล้ว");
+      }
+    }
   }
 </script>
 

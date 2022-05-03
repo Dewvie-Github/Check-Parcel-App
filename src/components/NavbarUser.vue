@@ -4,13 +4,21 @@
       <img src="/logo.png" align="left">
       <router-link to="/CollectParcel" > <h1>พัสดุที่ต้องไปรับ</h1></router-link>
       <router-link to="/OverdueParcel"> <h2>พัสดุเกินกำหนด</h2></router-link>
+      <router-link to="/" @click="logout()"> <h3>ออกจากระบบ</h3></router-link>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name:"NavbarUser"
+    name:"NavbarUser",
+    methods:{
+      logout(){
+        localStorage.setItem("currentLogin", null);
+        window.location.href = "/#/Login"
+        alert("คุณออกจากระบบแล้ว");
+      }
+    }
   }
 </script>
 
@@ -32,7 +40,7 @@
     margin-top: 35px;
     position: fixed;  
     top: 8%;  
-    left: 85%;  
+    left: 60%;  
     transform: translate(-50%, -50%); 
   }
   
@@ -45,7 +53,20 @@
     margin-top: 35px;
     position: fixed;  
     top: 8%;  
-    left: 70%;  
+    left: 75%;  
+    transform: translate(-50%, -50%); 
+  }
+
+   h3 {
+    font-family: "LayijiMahaniyom";
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 5px;
+    color: #333333;
+    margin-top: 35px;
+    position: fixed;  
+    top: 8%;  
+    left: 90%;  
     transform: translate(-50%, -50%); 
   }
 

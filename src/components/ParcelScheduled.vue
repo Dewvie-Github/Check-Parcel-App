@@ -1,22 +1,21 @@
-
 <script>
 import NavbarAdmin from './NavbarAdmin.vue'
 import ParcelData from './ParcelData.vue'
 import Axios from 'axios'
-
 export default {
-    name:"ReturnFinish",
+    name:"ParcelScheduled",
     components:{
         ParcelData,
         NavbarAdmin
     },
      data(){
         return{
-            DataParcels:[]
+            DataParcels:[ ]
         }
-    },methods:{
+    },
+    methods:{
         async getParcelScheduledData(){
-            await Axios.get("http://localhost:9000/parcelReturnFinish")
+            await Axios.get("http://localhost:9000/parcelScheduled")
             .then(res => {this.DataParcels = res.data})
             .then(console.log(this.DataParcels));
         },
@@ -27,34 +26,35 @@ export default {
 </script>
 
 <template>
-  <div class="container" >
-    <div class="header" > <NavbarAdmin /> </div>
-    <div class="body">
-      <center>
-      <table id="ReturnFinish">
-        <thead>
-            <tr>
-            <th>ลำดับ</th>
-            <th>รหัสพัสดุ</th>
-            <th>ชื่อ</th>
-            <th>นามสกุล</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ParcelData v-for = "item, index in DataParcels"
-            :key = "index">
-            <td>{{no = index+1}}</td>
-            <td>{{id = item.parcel_id}}</td>
-            <td>{{name = item.name}}</td>
-            <td>{{surname = item.surname}}</td>
-            </tr>
-        </tbody>
-      </table>
-      </center>
-    </div>
+    <div class="container" >
+        <div class="header" > <NavbarAdmin /> </div>
 
-  </div>
+        <div class="body">
+            <center>
+            <table id="ParcelScheduled">
+                <thead>
+                    <tr>
+                    <th>ลำดับ</th>
+                    <th>รหัสพัสดุ</th>
+                    <th>ชื่อ</th>
+                    <th>นามสกุล</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ParcelData v-for = "item, index in DataParcels"
+                    :key = "index">
+                    <td>{{no = index+1}}</td>
+                    <td>{{id = item.parcel_id}}</td>
+                    <td>{{name = item.name}}</td>
+                    <td>{{surname = item.surname}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </center>
+        </div>
+    </div>
 </template>
+
 
 
 <style scoped>
@@ -117,21 +117,5 @@ tbody td:hover:before{
 }
 input[type="checkbox"]+label{
     font-weight: normal;
-}
-button{
-    line-height: 0;
-    margin: 36px 0;
-    font:inherit;
-    background: #4C4C6D;
-    color:white;
-    cursor: pointer;
-    padding: 0.6rem 6.8rem;
-    border-radius: 33px;
-    position: sticky;
-}
-.button {
-  position: sticky;
-  bottom: 1rem;
-  align-self: flex-end;
 }
 </style>

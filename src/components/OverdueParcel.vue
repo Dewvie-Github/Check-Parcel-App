@@ -1,3 +1,44 @@
+<script>
+import NavbarUser from './NavbarUser.vue'
+import ParcelData from './ParcelData.vue'
+import Axios  from 'axios'
+export default {
+    name:"OverdueParcel",
+    components:{
+        ParcelData,
+        NavbarUser
+    },
+     data(){
+        return{
+            DataParcels:[
+
+            ]
+        }
+    },
+    methods:{
+        async getOverdueParcelData(){
+          await Axios.post("http://localhost:9000/overdueParcel", 
+          {
+            currentLogin: window.localStorage.getItem("currentLogin") 
+            }).then(res => {this.DataParcels = res.data})
+        },
+        arriveDate(date){
+          const fDate = new Date(date);
+          return `${fDate.getDate()}/${fDate.getMonth()}/${fDate.getFullYear()}`;
+        },
+        returnDate(date){
+          const myDate = new Date(date).getTime();
+          const nextWeekDate = myDate + (1000 * 60 * 60 * 24 * 7);
+
+          const fDate = new Date(nextWeekDate);
+          return `${fDate.getDate()}/${fDate.getMonth()}/${fDate.getFullYear()}`;
+        }
+    }, mounted(){
+        this.getOverdueParcelData()
+    }
+}
+</script>
+
 <template>
   <div class="container" >
     <div class="header" > <NavbarUser /> </div>
@@ -14,10 +55,9 @@
         <tbody>
             <tr ParcelData v-for = "item, index in DataParcels"
             :key = "index">
-            <td>{{no = item.no}}</td>
-            <td>{{id = item.id}}</td>
-            <td>{{dateArrived = item.dateArrived}}</td>
-            <td>{{dateReturn = item.dateReturn}}</td>
+            <td>{{no = index+1}}</td>
+            <td>{{id = item.parcel_id}}</td>
+            <td>{{dateReturn = returnDate(item.date)}}</td>
             </tr>
         </tbody>
       </table>
@@ -27,29 +67,7 @@
   </div>
 </template>
 
-<script>
-import NavbarUser from './NavbarUser.vue'
-import ParcelData from './ParcelData.vue'
-export default {
-    name:"OverdueParcel",
-    components:{
-        ParcelData,
-        NavbarUser
-    },
-     data(){
-        return{
-            DataParcels:[
-                {no:1, id:"00-00001", name:"Nutchanock", surname:"Wisuttiphun",
-                dateArrived:"01-01-22", dataReturn:"08-01-22", asScheduled:true, overdue:false},
-                {no:2, id:"00-00002", name:"Saharat", surname:"Thongin",
-                dateArrived:"01-01-22", dataReturn:"08-01-22", asScheduled:true, overdue:false},
-                {no:3, id:"00-00003", name:"Wanvipar", surname:"Ruka",
-                dateArrived:"01-01-22", dataReturn:"08-01-22", asScheduled:true, overdue:false}
-            ]
-        }
-    }
-}
-</script>
+
 
 <style scoped>
 .container {

@@ -1,7 +1,7 @@
 <script>
 import FormAddParcel from "./components/FormAddParcel.vue";
 import CheckStatus from "./components/CheckStatus.vue";
-import ParcelReturn from "./components/ParcelReturn.vue";
+import ParcelScheduled from "./components/ParcelScheduled.vue";
 import ReturnFinish from "./components/ReturnFinish.vue";
 import ParcelData from './components/ParcelData.vue'
 import NavbarAdmin from "./components/NavbarAdmin.vue"
@@ -9,6 +9,20 @@ import Login from "./components/Login.vue"
 import Register from './components/Register.vue'
 import CollectParcel from "./components/CollectParcel.vue"
 import OverdueParcel from './components/OverdueParcel.vue'
+
+export default{
+  data(){
+    return{
+      
+    }
+  },
+  computed:{
+    
+    
+  }
+}
+
+
 </script>
 
 <template>

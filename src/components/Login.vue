@@ -9,31 +9,73 @@
 
     <div class="form-control">
       <center>
-          <input type="text" class="log" placeholder="E-mail" style="background: #4C4C6D">
+          <input type="text" v-model.trim="userData.email" class="log" placeholder="E-mail" style="background: #4C4C6D">
        </center>
     </div>
 
     <div class="form-control">
       <center>
-          <input type="text" class="log" placeholder="Password" style="background: #4C4C6D">
+          <input type="password" v-model.trim="userData.password" class="log" placeholder="Password" style="background: #4C4C6D">
        </center>
     </div>
 
     <div>
-      <center><button>Login</button></center>
+      <center><button @click="checkLogin(userData)">Login</button></center>
     </div>
   
     <div2 class="control">
-      <center>Don’t have an account? &nbsp; <router-link to="/Register">Get Started </router-link></center>
+      <center>Don't have an account? &nbsp; <router-link to="/Register">Get Started </router-link></center>
     </div2>
 
   </rectangle>
 </template>
 
 <script>
-export default {
-  name:"Login"
+import Axios from "axios"
 
+export default {
+  name:"Login",
+  data(){
+        return{
+            userData:{
+                email:"",
+                password:"",
+                account_type:""
+            }
+        }
+    },
+  methods:{
+      async checkLogin(userData){
+        if (
+          (userData.email == '') || (userData.email == null )|| 
+          (userData.password == '') || (userData.password == null) ){
+          alert("กรุณาใส่ Email และ Password")
+
+          return 0;
+        }
+        await Axios.post("http://localhost:9000/login",{
+            email: userData.email,
+            password: userData.password
+            }).then(res => userData.account_type = res.data.account_type ).catch(err => console.log(err))
+            
+        if (userData.account_type == "admin"){
+          localStorage.setItem("currentLogin", userData.email);
+          localStorage.setItem("accountType", userData.account_type);
+          alert(`คุณเข้าสู่ระบบด้วยบัญชี ${userData.email}`)
+          window.location.href = "/#/FormAddParcel"
+          
+        }else if(userData.account_type == "user"){
+          localStorage.setItem("currentLogin", userData.email);
+          localStorage.setItem("accountType", userData.account_type);
+          alert(`คุณเข้าสู่ระบบด้วยบัญชี ${userData.email}`)
+          window.location.href = "/#/CollectParcel"
+        }
+        else{
+          alert("Could not find email or password! Please enter again.")
+          localStorage.setItem("currentLogin", null);
+        }
+      }
+  }
 }
 </script>
 
