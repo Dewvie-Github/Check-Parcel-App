@@ -20,7 +20,7 @@ export default {
     },
   methods:{
       async createUser(userData){
-        if (password !== confirmPassword){
+        if (userData.password != userData.confirmPassword){
           alert("รหัสผ่านไม่ตรงกัน โปรดกรอกใหม่อีกครั้ง")
           return 0;
         }else if (
@@ -40,6 +40,7 @@ export default {
             email: userData.email,
             password: userData.password
             }).then(res => console.log(res)).catch(err => console.log(err))
+          alert("สมัครเสร็จสิ้น ไป Login ได้เลย")
           window.location.href = "/#/Login" 
         }
       }  
@@ -72,15 +73,15 @@ export default {
 
     <div3 class="con">
       <center>
-        <input v-model="userData.checked1" type="checkbox" required />
-        <label>I agree that I use @fitm.kmutnb.ac.th email. </label>
+        <input v-model="userData.checked1" value="false" type="checkbox" required />
+        <label> I agree that I use @fitm.kmutnb.ac.th email. </label>
        </center>
     </div3>
 
     <div3 class="con">
       <center>
-        <input v-model="userData.checked2" type="checkbox" required />
-        <label>I agree to the terms and conditions </label>
+        <input v-model="userData.checked2" value="false" type="checkbox" required />
+        <label>  I agree to the terms and conditions </label>
        </center>
     </div3>
 

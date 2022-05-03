@@ -9,7 +9,7 @@
 
     <div class="form-control">
       <center>
-          <input type="text" v-model.trim="userData.email" class="log" placeholder="E-mail" style="background: #4C4C6D">
+          <input type="text" v-model.trim="userData.email" class="log" id="email" placeholder="E-mail" style="background: #4C4C6D">
        </center>
     </div>
 
