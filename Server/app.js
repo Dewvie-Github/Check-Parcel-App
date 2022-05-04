@@ -1,11 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose')
-require('dotenv').config();
-const Parcel = require('./models/parcel');
-const User = require('./models/user')
 const app = express();
 var cors = require('cors');
 const bcrypt = require('bcrypt');
+
+require('dotenv').config();
+const mongoose = require('mongoose')
+
+const Parcel = require('./models/parcel');
+const User = require('./models/user')
  
 app.use(cors())
 
@@ -73,9 +75,7 @@ app.post("/overdueParcel" , async(req,res) => {
 
   }catch(err){
     res.status(501).json(err);
-
   }
-  
 })
 
 app.get("/parcelCount" , async(req,res) => {
