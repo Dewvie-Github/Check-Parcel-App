@@ -12,59 +12,70 @@ app.use(cors())
 
 app.use(express.json());
 
-//Use dotenv to read .env vars into Node
-//Callbyy process.env.DATABASE_URL
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
+// Use dotenv to read .env vars into Node
+// Callbyy process.env.DATABASE_URL
 
+mongoose.connect("mongodb://localhost:27017/parceldb", { useNewUrlParser: true });
 
-
+// mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 
 // Our Code
 app.post("/collectParcel" , async(req,res) => {
-  let user = req.body.currentLogin
+  try{
+    let user = req.body.currentLogin
 
-  user = await User.find({email: user})
-  user = user[0]
+    user = await User.find({email: user})
+    user = user[0]
 
-  const parcel = await Parcel.find({
-    statusDelivered: false,
-    returnDelivered: false
-  });
+    const parcel = await Parcel.find({
+      statusDelivered: false,
+      returnDelivered: false
+    });
 
-  // find parcel that name TH and EN of user
-  let userParcel = []
-  for (let i =0; i < parcel.length; i++){
-    if(
-      (parcel[i].name == user.nameTH && parcel[i].surname == user.surnameTH) ||
-      (parcel[i].name == user.nameEN && parcel[i].surname == user.surnameEN)
-    ){
-      userParcel.push(parcel[i]);
-    }
+    // find parcel that name TH and EN of user
+    let userParcel = []
+    for (let i =0; i < parcel.length; i++){
+      if(
+        (parcel[i].name == user.nameTH && parcel[i].surname == user.surnameTH) ||
+        (parcel[i].name == user.nameEN && parcel[i].surname == user.surnameEN)
+      ){
+        userParcel.push(parcel[i]);
+      }}
+    res.status(200).json(userParcel)
+  }catch{
+    res.status(501).end()
   }
-  res.status(200).json(userParcel)
+  
 })
 
 app.post("/overdueParcel" , async(req,res) => {
-  let user = req.body.currentLogin
-  user = await User.find({email: user})
-  user = user[0]
+  try{
+    let user = req.body.currentLogin
+    user = await User.find({email: user})
+    user = user[0]
 
-  const parcel = await Parcel.find({
-    statusDelivered: false,
-    returnDelivered: true
-  });
+    const parcel = await Parcel.find({
+      statusDelivered: false,
+      returnDelivered: true
+    });
 
-  // find parcel that name TH and EN of user
-  let userParcel = []
-  for (let i =0; i < parcel.length; i++){
-    if(
-      (parcel[i].name == user.nameTH && parcel[i].surname == user.surnameTH) ||
-      (parcel[i].name == user.nameEN && parcel[i].surname == user.surnameEN)
-    ){
-      userParcel.push(parcel[i]);
+    // find parcel that name TH and EN of user
+    let userParcel = []
+    for (let i =0; i < parcel.length; i++){
+      if(
+        (parcel[i].name == user.nameTH && parcel[i].surname == user.surnameTH) ||
+        (parcel[i].name == user.nameEN && parcel[i].surname == user.surnameEN)
+      ){
+        userParcel.push(parcel[i]);
+      }
     }
+    res.status(200).json(userParcel)
+
+  }catch(err){
+    res.status(501).json(err);
+
   }
-  res.status(200).json(userParcel)
+  
 })
 
 app.get("/parcelCount" , async(req,res) => {
@@ -80,10 +91,14 @@ app.get("/parcel" , async(req,res) => {
 })
 
 app.post("/parcel" , async(req,res) => {
-  const payload = req.body;
-  const parcel = new Parcel(payload);
-  await parcel.save();
-  res.json(parcel)
+  try{
+    const payload = req.body;
+    const parcel = new Parcel(payload);
+    await parcel.save();
+    res.json(parcel)
+  }catch(err){
+    res.status(501).end();
+  }
 })
 
 app.put("/parcel", async(req,res) => {
@@ -118,12 +133,9 @@ app.get("/parcelReturnFinish" , async(req,res) => {
 // User
 app.post("/user" , async(req,res) => {
   const payload = req.body;
-  console.log(payload)
 
   // Hash password!
   payload.password = await hashPassword(payload.password)
-
-  console.log(payload)
 
   const user = new User(payload);
   await user.save();
@@ -146,7 +158,7 @@ app.post('/login', async (req, res) => {
     if (match == false){
       res.status(400).end();
     }
-    else if (user.email == "admin" && user.password == "1234") {
+    else if (user.email == "admin") {
       res.status(200).json({account_type: "admin"});
       console.log(`${user.email} has login!`)
     }else if (match){

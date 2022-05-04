@@ -47,6 +47,8 @@ export default {
     <div class="header" > <NavbarUser /> </div>
     <div class="body">
       <center>
+        <div class="head">พัสดุที่ต้องไปรับ</div>
+        <br>
       <table id="ReturnFinish">
         <thead>
             <tr>
@@ -150,5 +152,18 @@ button{
   position: sticky;
   bottom: 1rem;
   align-self: flex-end;
+}
+.head{
+    font-size: 40px;
+    font-weight: 900;
+    background-color: #8c70a8;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 300px;
+    border-radius: 33px;
+}
+.head:hover {
+    background-color: rgb(168, 123, 204);
 }
 </style>

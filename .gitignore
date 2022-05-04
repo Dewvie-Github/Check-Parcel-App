@@ -10,6 +10,8 @@ lerna-debug.log*
 
 .env
 
+picture
+
 test.js
 
 node_modules

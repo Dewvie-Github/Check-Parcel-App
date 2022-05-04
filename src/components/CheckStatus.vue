@@ -25,7 +25,7 @@ export default {
         async checkUpdateParcel(DataParcels){
             for (let i =0; i< DataParcels.length;i++){
                 if(DataParcels[i].statusDelivered == true && DataParcels[i].returnDelivered == true){
-                    alert(`id:${DataParcels[i].parcel_id} ให้เลือกติ๊กแค่ช่องเดียวเท่านั้น! `)
+                    alert(`รหัสพัสดุ:${DataParcels[i].parcel_id} ให้เลือกติ๊กแค่ช่องเดียวเท่านั้น! `)
                     return 'error';
                 }
             }
@@ -57,10 +57,12 @@ export default {
 <template>
  <div class="container" >
 
-        <div class="header" > <NavbarAdmin /> </div>
+        <div class="header" > <NavbarAdmin /> </div> 
         
         <div class="body">
             <center>
+                <center><div class="head">ยืนยันสถานะพัสดุ</div></center>
+                <br>
             <table id="CheckStatus" >
                 <thead>
                     <tr>
@@ -178,5 +180,18 @@ button{
   position: sticky;
   bottom: 1rem;
   align-self: flex-end;
+}
+.head{
+    font-size: 40px;
+    font-weight: 900;
+    background-color: #8c70a8;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 300px;
+    border-radius: 33px;
+}
+.head:hover {
+    background-color: rgb(168, 123, 204);
 }
 </style>
