@@ -10,6 +10,7 @@ lerna-debug.log*
 
 .env
 
+videos
 picture
 
 test.js
