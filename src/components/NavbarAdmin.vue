@@ -2,7 +2,7 @@
   <div>
     <ul>
     <div class="nav menu">
-      <img src="logo.png" align="left">
+      <img src="../assets/logo.png" align="left">
       <li><router-link to="/FormAddParcel" > <h1>เพิ่มข้อมูลพัสดุ</h1></router-link></li>
       <li><router-link to="/CheckStatus"> <h1>ยืนยันสถานะพัสดุ</h1></router-link></li>
       <li><router-link to="/ParcelScheduled"> <h1>พัสดุที่มารับตามกำหนด</h1></router-link></li>

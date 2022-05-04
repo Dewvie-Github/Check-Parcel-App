@@ -2,7 +2,7 @@
   <div>
     <ul>
     <div class="nav menu">
-      <img src="logo.png" align="left">
+      <img src="../assets/logo.png" align="left">
       <li><router-link to="/"  @click="logout()" > <h2>ออกจากระบบ</h2></router-link></li>
       <li><router-link to="/OverdueParcel"> <h2>พัสดุเกินกำหนด</h2></router-link></li>
       <li><router-link to="/CollectParcel" ><h2>พัสดุที่ต้องไปรับ</h2></router-link></li>
